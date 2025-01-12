@@ -1,7 +1,9 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
-
+from yellowbrick.cluster import KElbowVisualizer
+from sklearn.metrics import silhouette_score
 class Format_data:
     def __init__(self, file_path_image : str) -> None:
         self.file_path_image = file_path_image
@@ -33,7 +35,7 @@ class Kmeas:
         return labels
     
 #get size image
-file_path_image = r"..\cat.147.jpg"
+file_path_image = r"D:\Setmen_image\image\cat.147.jpg"
 data = Format_data(file_path_image)
 
 img = data.get_image()
@@ -67,8 +69,28 @@ image1 = np.uint8(image1)
 result_mask0 = cv2.bitwise_and(img,img,mask=image0)
 result_mask1 = cv2.bitwise_and(img,img,mask=image1)
 
-cv2.imshow("result mask ", result_mask1)
+
+cv2.imshow("img",result_mask1)
 cv2.waitKey()
+# .imshow("img",result_mask0)
+# cv2.destroyAllWindows()
+
+#Using eblow check cluster
+model = KMeans()
+show_model =  KElbowVisualizer(model,k=(1,10))
+show_model.fit(pixels)
+show_model.poof()
+# print("End = sussuflly")
+
+#Sử dụng độ đo để kiểm tra khả năng phân cụm
+
+result = silhouette_score(pixels,labels=labels)
+print(result)
+
+
+
+
+
 
 
 
